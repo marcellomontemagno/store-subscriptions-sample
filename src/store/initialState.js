@@ -15,21 +15,21 @@ const initialState = {
       sectionUUID1: {
         id: "sectionUUID1",
         type: 'paper',
-        position: 1,
+        position: 'a0',
         content: 'Section 1',
         createdBy: 'userUUID1'
       },
       sectionUUID2: {
         id: "sectionUUID2",
         type: 'paper',
-        position: 2,
+        position: 'a1',
         content: 'Section 2',
         createdBy: 'userUUID1'
       },
       sectionUUID3: {
         id: "sectionUUID3",
         type: 'paper',
-        position: 3,
+        position: 'a2',
         content: 'Section 3',
         createdBy: 'userUUID1'
       },

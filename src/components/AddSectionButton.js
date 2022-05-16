@@ -1,36 +1,35 @@
-import {useCallback, useContext} from "react"
-import StoreContext from "../store/StoreContext"
+import {useCallback} from "react"
 import produce from "immer"
-import * as R from "ramda"
 import createUser from "../domain/createUser"
 import createSection from "../domain/createSection"
+import useStore from "../store/useStore"
+import * as R from "ramda"
+import sortPaperSections from "../utils/sortPaperSections"
 
 const AddSectionButton = () => {
 
-  const [, setStore] = useContext(StoreContext)
-
   const onClick = useCallback(() => {
-    setStore(produce((store) => {
+    useStore.setState(produce((store) => {
 
-      const lastPosition = R.pipe(
-        R.values,
-        R.filter((s) => s.type === 'paper'),
-        R.sortBy(R.prop('position')),
-        R.last,
-        R.prop('position')
-      )(store.entities.sections)
+      const sortedPaperSections = sortPaperSections(store.entities.sections)
+      const lastPosition = R.last(sortedPaperSections).position
 
       //not meaningful, this is here just to simulate the need to write in different part of the store
       const creator = createUser()
-      store.entities.users[creator.id] = creator
 
       const paperSection = createSection({position: lastPosition + 1, createdBy: creator.id})
-      const execSummarySection = createSection({type: 'summary', paperSectionId: paperSection.id, createdBy: creator.id})
+      const execSummarySection = createSection({
+        type: 'summary',
+        paperSectionId: paperSection.id,
+        createdBy: creator.id
+      })
+
+      store.entities.users[creator.id] = creator
       store.entities.sections[paperSection.id] = paperSection
       store.entities.sections[execSummarySection.id] = execSummarySection
 
     }))
-  }, [setStore])
+  }, [])
 
   return <button onClick={onClick}>Add section</button>
 }

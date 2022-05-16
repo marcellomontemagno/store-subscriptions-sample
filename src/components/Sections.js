@@ -1,19 +1,9 @@
-import {useContext} from "react"
-import StoreContext from "../store/StoreContext"
-import * as R from "ramda"
 import Section from "./Section"
+import useSortedPaperSections from "../utils/useSortedPaperSections"
 
 const Sections = () => {
 
-  const [store] = useContext(StoreContext)
-
-  const sections = store.entities.sections
-
-  const sortedPaperSections = R.pipe(
-    R.values,
-    R.filter((s) => s.type === 'paper'),
-    R.sortBy(R.prop('position'))
-  )(sections)
+  const sortedPaperSections = useSortedPaperSections()
 
   return <>
     <h2>Sections:</h2>

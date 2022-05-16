@@ -1,5 +1,7 @@
+import createRandomIntegerBetween from "../utils/createRandomIntegerBetween"
+
 const createUser = () => {
-  const ranId = Math.floor(Math.random() * 100) + 1;
+  const ranId = createRandomIntegerBetween(1, 100)
   return {
     id: ranId,
     firstName: "Will" + ranId,

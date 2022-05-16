@@ -1,15 +1,12 @@
-import {useCallback, useContext, useMemo} from "react"
-import StoreContext from "../store/StoreContext"
+import {memo, useCallback, useMemo} from "react"
 import produce from "immer"
+import useStore from "../store/useStore"
 
 const ExecSummarySection = ({sectionId}) => {
 
-  const [store, setStore] = useContext(StoreContext)
-  const {sections, users} = store.entities
-  const section = sections[sectionId]
-  const creator = users[section.createdBy]
-
-  const paperSectionContent = sections[section.paperSectionId].content
+  const section = useStore((store) => store.entities.sections[sectionId])
+  const creator = useStore((store) => store.entities.users[section.createdBy])
+  const paperSectionContent = useStore((store) => store.entities.sections[section.paperSectionId].content)
 
   const heading = useMemo(() => {
     return paperSectionContent.split('\n')[0];
@@ -17,10 +14,10 @@ const ExecSummarySection = ({sectionId}) => {
 
   const onChange = useCallback((event) => {
     const value = event.target.value
-    setStore(produce((store) => {
+    useStore.setState(produce((store) => {
       store.entities.sections[sectionId].content = value
     }))
-  }, [setStore, sectionId])
+  }, [sectionId])
 
   return <div>
     <h4>{heading}</h4>
@@ -29,4 +26,17 @@ const ExecSummarySection = ({sectionId}) => {
   </div>
 }
 
-export default ExecSummarySection
+/*
+  //alternative selector implementation
+  const {section, paperSectionContent, creator} = useStore((store) => {
+    const sections = store.entities.sections
+    const section = sections[sectionId]
+    return {
+      section,
+      paperSectionContent: sections[section.paperSectionId].content,
+      creator: store.entities.users[section.createdBy]
+    }
+  }, shallow)
+*/
+
+export default memo(ExecSummarySection)
