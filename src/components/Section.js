@@ -1,14 +1,14 @@
-import {useCallback, useContext} from "react"
-import StoreContext from "../store/StoreContext"
+import {useCallback, memo} from "react"
 import produce from "immer"
+import useStore from "../store/useStore"
 
 const Section = ({sectionId}) => {
 
-  const [store, setStore] = useContext(StoreContext)
-  const {sections, users} = store.entities
-  const section = sections[sectionId]
-  const creator = users[section.createdBy]
+  const section = useStore((store) => store.entities.sections[sectionId])
+  const creator = useStore((store) => store.entities.users[section.createdBy])
 
+  const setStore = useStore.setState
+  
   const onChange = useCallback((event) => {
     const value = event.target.value
     setStore(produce((store) => {
@@ -22,4 +22,4 @@ const Section = ({sectionId}) => {
   </div>
 }
 
-export default Section
+export default memo(Section)

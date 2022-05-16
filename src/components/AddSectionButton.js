@@ -1,13 +1,13 @@
-import {useCallback, useContext} from "react"
-import StoreContext from "../store/StoreContext"
+import {useCallback} from "react"
 import produce from "immer"
 import * as R from "ramda"
 import createUser from "../domain/createUser"
 import createSection from "../domain/createSection"
+import useStore from "../store/useStore"
 
 const AddSectionButton = () => {
 
-  const [, setStore] = useContext(StoreContext)
+  const setStore = useStore.setState
 
   const onClick = useCallback(() => {
     setStore(produce((store) => {

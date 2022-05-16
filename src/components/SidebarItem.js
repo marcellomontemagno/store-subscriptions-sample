@@ -1,11 +1,9 @@
-import {useContext, useMemo} from "react"
-import StoreContext from "../store/StoreContext"
+import {memo, useMemo} from "react"
+import useStore from "../store/useStore"
 
 const SidebarItem = ({sectionId}) => {
 
-  const [store] = useContext(StoreContext)
-  const sections = store.entities.sections
-  const section = sections[sectionId]
+  const section = useStore((store) => store.entities.sections[sectionId])
   const content = section.content
 
   const heading = useMemo(() => {
@@ -16,4 +14,4 @@ const SidebarItem = ({sectionId}) => {
 
 }
 
-export default SidebarItem
+export default memo(SidebarItem)

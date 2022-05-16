@@ -1,15 +1,21 @@
-import {useCallback, useContext, useMemo} from "react"
-import StoreContext from "../store/StoreContext"
+import {memo, useCallback, useMemo} from "react"
 import produce from "immer"
+import useStore from "../store/useStore"
+import shallow from "zustand/shallow"
 
 const ExecSummarySection = ({sectionId}) => {
 
-  const [store, setStore] = useContext(StoreContext)
-  const {sections, users} = store.entities
-  const section = sections[sectionId]
-  const creator = users[section.createdBy]
+  const {section, paperSectionContent, creator} = useStore((store) => {
+    const sections = store.entities.sections
+    const section = sections[sectionId]
+    return {
+      section,
+      paperSectionContent: sections[section.paperSectionId].content,
+      creator: store.entities.users[section.createdBy]
+    }
+  }, shallow)
 
-  const paperSectionContent = sections[section.paperSectionId].content
+  const setStore = useStore.setState
 
   const heading = useMemo(() => {
     return paperSectionContent.split('\n')[0];
@@ -29,4 +35,4 @@ const ExecSummarySection = ({sectionId}) => {
   </div>
 }
 
-export default ExecSummarySection
+export default memo(ExecSummarySection)

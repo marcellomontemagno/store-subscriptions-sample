@@ -1,14 +1,10 @@
-import {useCallback, useContext, useMemo} from "react"
-import StoreContext from "../store/StoreContext"
 import * as R from "ramda"
-import produce from "immer"
 import ExecSummarySection from "./ExecSummarySection"
+import useStore from "../store/useStore"
 
 const ExecSummary = () => {
 
-  const [store] = useContext(StoreContext)
-
-  const sections = store.entities.sections
+  const sections = useStore((store) => store.entities.sections)
 
   const sortedPaperSections = R.pipe(
     R.values,
