@@ -1,15 +1,12 @@
-import {useCallback, useContext, useMemo} from "react"
-import StoreContext from "../store/StoreContext"
-import produce from "immer"
+import {useCallback, useMemo, memo} from "react"
+import {useRecoilState, useRecoilValue} from "recoil"
+import {sectionAtom, userAtom} from "../store/atoms"
 
 const ExecSummarySection = ({sectionId}) => {
 
-  const [store, setStore] = useContext(StoreContext)
-  const {sections, users} = store.entities
-  const section = sections[sectionId]
-  const creator = users[section.createdBy]
-
-  const paperSectionContent = sections[section.paperSectionId].content
+  const [section, setSection] = useRecoilState(sectionAtom({id: sectionId}))
+  const creator = useRecoilValue(userAtom({id: section.createdBy}))
+  const paperSectionContent = useRecoilValue(sectionAtom({id: section.paperSectionId})).content
 
   const heading = useMemo(() => {
     return paperSectionContent.split('\n')[0];
@@ -17,10 +14,13 @@ const ExecSummarySection = ({sectionId}) => {
 
   const onChange = useCallback((event) => {
     const value = event.target.value
-    setStore(produce((store) => {
-      store.entities.sections[sectionId].content = value
-    }))
-  }, [setStore, sectionId])
+    setSection((section) => {
+      return {
+        ...section,
+        content: value
+      }
+    })
+  }, [setSection, sectionId])
 
   return <div>
     <h4>{heading}</h4>
@@ -29,4 +29,4 @@ const ExecSummarySection = ({sectionId}) => {
   </div>
 }
 
-export default ExecSummarySection
+export default memo(ExecSummarySection)

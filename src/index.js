@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import StoreContext from "./store/StoreContext"
-import initialState from "./store/initialState"
+import {RecoilRoot} from 'recoil';
 
 const Providers = ({children}) => {
-  return <StoreContext.Provider value={useState(initialState)}>
+  return <RecoilRoot>
     {children}
-  </StoreContext.Provider>
+  </RecoilRoot>
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
