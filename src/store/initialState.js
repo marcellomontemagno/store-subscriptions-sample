@@ -58,4 +58,55 @@ const initialState = {
   }
 }
 
+/*
+
+just another example
+
+//1Author:NBookmarks
+//NBookmarks:NTags
+
+authors:{
+	a1:{
+		firstName
+	}
+}
+
+bookmarks:{
+	bookmarkId:{
+		title
+		url
+		authorId
+	}
+}
+
+bookmarksTags:{
+	bookmarkId+tagId:{
+		bookmarkId1:b1
+		tagId:t2
+	}
+	bookmarkId+tagId:{
+		bookmarkId1:b1
+		tagId:t2
+	}
+}
+
+const getBookmarksByTag = (tagId)=>{
+	const bookmarksTagsByTagId = Object.values(bookmarksTags).groupBy(R.prop(`tagId`))
+	const thisBookmarksTags = bookmarksTagsByTagId[tagId]
+	return thisBookmarksTags.map((bt)=>bookmarks[bt.bookmarkId])
+}
+
+const getTagsByBookmark = (bookmarkId)=>{
+	const bookmarksTagsByBookmarkId = Object.values(bookmarksTags).groupBy(R.prop(`bookmarkId`))
+	const thisBookmarksTags = bookmarksTagsByBookmarkId[bookmarkId]
+	return thisBookmarksTags.map((bt)=>tags[bt.tagId])
+}
+
+const getBookmarksByAuthor = (authorId)=>{
+	const bookmarksByAuthorId = Object.values(bookmarksTags).groupBy(R.prop(`authorId`))
+	return bookmarksByAuthorId[authorId]
+}
+
+*/
+
 export default initialState
